@@ -67,19 +67,19 @@ public class Location {
     }
 
 
-    public void validateLatitude(double latitude) {
+    public void validateLatitude(double latitude) throws  IllegalArgumentException {
         if (latitude < -85 || latitude > 85) {
             throw new IllegalArgumentException("Latitude value is invalid! Value has to be between -85 and 85. Passed value: " + latitude);
         }
     }
 
-    public void validateLongitude(double longitude) {
+    public void validateLongitude(double longitude) throws  IllegalArgumentException  {
         if (longitude < -180 || longitude > 180) {
             throw new IllegalArgumentException("Longitude value is invalid! Value has to be between -180 and 180. Passed value: " + longitude);
         }
     }
 
-    public void validateAlias(String alias) {
+    public void validateAlias(String alias) throws  IllegalArgumentException {
         if (alias.equals(null) || alias.equals("")) {
             throw new IllegalArgumentException("Alias value is invalid! Value is null!");
         }

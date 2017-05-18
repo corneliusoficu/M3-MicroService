@@ -1,8 +1,12 @@
 package com.hazardmanager.users.controllers;
 
+import com.hazardmanager.users.DTO.AreaDto;
 import com.hazardmanager.users.DTO.CreatingUserDto;
+import com.hazardmanager.users.DTO.LocationDto;
 import com.hazardmanager.users.DTO.UserDto;
+import com.hazardmanager.users.models.Location;
 import com.hazardmanager.users.models.User;
+import com.hazardmanager.users.services.LocationService;
 import com.hazardmanager.users.utilis.RandomImportsGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import com.hazardmanager.users.services.UserService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -20,6 +26,9 @@ public class UserController {
 
     @Autowired
     private UserService service;
+
+    @Autowired
+    private LocationService locationService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -47,11 +56,34 @@ public class UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @RequestMapping(value = {"/users"}, method = RequestMethod.GET)
+    public ResponseEntity<Set<UserDto>> getAllUsersInArea(@RequestParam("latitude") double latitude, @RequestParam double longitude, @RequestParam double radius) {
+        AreaDto area = new AreaDto();
+        area.longitude = longitude;
+        area.latitude = latitude;
+        area.radius = radius;
+        List<Location> locations = this.locationService.getLocationsWithinEventArea(area);
+        Set<UserDto> usersInArea = new HashSet<>();
+        for(Location location : locations){
+            usersInArea.add(toDto(this.service.getById(location.getUserId())));
+        }
+        if(usersInArea.size() == 0){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }else{
+            return new ResponseEntity<>(usersInArea, HttpStatus.OK);
+        }
+
+    }
+
     @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserDto> addUser(@RequestBody CreatingUserDto userDto) {
         User user = toCreatingModel(userDto);
-        checkIfValidUser(user);
+        try {
+            checkIfValidUser(user);
+        }catch (IllegalArgumentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         User savedUser = this.service.save(user);
         return new ResponseEntity<>(toDto(savedUser), HttpStatus.CREATED);
     }
@@ -75,7 +107,11 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         modifyUserAccordingToDTO(user, userDto);
-        checkIfValidUser(user);
+        try {
+            checkIfValidUser(user);
+        }catch (IllegalArgumentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         this.service.save(user);
         return new ResponseEntity<>(toDto(user), HttpStatus.OK);
     }

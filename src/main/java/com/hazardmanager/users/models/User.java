@@ -105,34 +105,34 @@ public class User {
         this.role = role;
     }
 
-    public void validateFirstName(String text) {
+    public void validateFirstName(String text)throws IllegalArgumentException {
         if(text.length()>50)
             throw new IllegalArgumentException("First Name must be under 50 characters long. Passed name has " + text.length()+ " characters");
     }
 
-    public void validateLastName(String text) {
+    public void validateLastName(String text)throws IllegalArgumentException{
         if(text.length()>50)
             throw new IllegalArgumentException("Last Name must be under 50 characters long. Passed name has " + text.length()+ " characters");
     }
 
-    public void validateUserName(String text) {
+    public void validateUserName(String text)throws IllegalArgumentException {
         if(text.length()>50)
             throw new IllegalArgumentException("Username must be under 50 characters long. Passed name has " + text.length()+ " characters");
     }
 
-    public void validatePassword(String text) {
+    public void validatePassword(String text)throws IllegalArgumentException {
         if(text.length()>50)
             throw new IllegalArgumentException("Password must be under 50 characters long. Passed name has " + text.length()+ " characters");
     }
 
-    public void validateEmail(String text) {
+    public void validateEmail(String text)throws IllegalArgumentException {
         if(text.length()>50)
             throw new IllegalArgumentException("Email must be under 50 characters long. Passed name has " + text.length()+ " characters");
         if(!text.contains("@"))
             throw new IllegalArgumentException("Email must be a valid email.");
     }
 
-    public void validatePhoneNumber(String text) {
+    public void validatePhoneNumber(String text)throws IllegalArgumentException {
         if(text.length()>50)
             throw new IllegalArgumentException("Phone Number must be under 50 characters long. Passed name has " + text.length()+ " characters");
         if (Pattern.matches("[a-zA-Z]+", text)) {

@@ -2,15 +2,14 @@ package com.hazardmanager.users.services;
 
 import com.hazardmanager.users.DTO.AreaDto;
 import com.hazardmanager.users.models.Location;
-import com.hazardmanager.users.models.User;
 import com.hazardmanager.users.repositories.LocationRepository;
+import com.hazardmanager.users.utilis.DistanceCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import com.hazardmanager.users.utilis.DistanceCalculator;
-import java.awt.geom.Area;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

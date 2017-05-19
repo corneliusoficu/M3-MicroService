@@ -1,10 +1,7 @@
 package com.hazardmanager.users.services;
 
 import com.hazardmanager.users.DTO.AreaDto;
-import com.hazardmanager.users.DTO.LocationDto;
 import com.hazardmanager.users.models.Location;
-import com.hazardmanager.users.services.LocationService;
-import com.hazardmanager.users.services.LocationServiceImpl;
 import com.hazardmanager.users.utilis.DistanceCalculator;
 import org.junit.Assert;
 import org.junit.Before;

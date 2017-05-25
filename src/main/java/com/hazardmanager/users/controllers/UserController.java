@@ -64,12 +64,12 @@ public class UserController {
         area.radius = radius;
         List<Location> locations = this.locationService.getLocationsWithinEventArea(area);
         Set<UserDto> usersInArea = new HashSet<>();
-        for(Location location : locations){
+        for (Location location : locations){
             usersInArea.add(toDto(this.service.getById(location.getUserId())));
         }
         if(usersInArea.size() == 0){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else{
+        } else{
             return new ResponseEntity<>(usersInArea, HttpStatus.OK);
         }
 

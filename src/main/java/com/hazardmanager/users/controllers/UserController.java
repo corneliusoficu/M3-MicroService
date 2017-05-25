@@ -89,7 +89,7 @@ public class UserController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") String id) {
         User user = this.service.getById(id);
         if (user == null) {

@@ -25,7 +25,7 @@ import java.util.List;
 public class LocationController {
     @Autowired
     private LocationService service;
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = {"/{userId}/locations"}, method = RequestMethod.GET)
     public ResponseEntity<List<LocationDto>> getAllLocationsById(@PathVariable("userId") String userId) {
         MongoTemplate mongoTemplate = new MongoTemplate(new MongoClient("127.0.0.1"), "hazardmanager");
@@ -44,14 +44,14 @@ public class LocationController {
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = {"/{userId}/locations"}, method = RequestMethod.POST)
     public ResponseEntity<LocationDto> addNewLocation(@RequestBody CreatingLocationDto creatinglocationDto, @PathVariable("userId") String userId) {
         Location location = toCreatingModel(creatinglocationDto, userId);
         Location savedLocation = this.service.save(location);
         return new ResponseEntity<>(toDto(savedLocation), HttpStatus.CREATED);
     }
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = {"/{userId}/locations/{alias}"}, method = RequestMethod.PUT)
     public ResponseEntity<LocationDto> modifyLocation(@RequestBody CreatingLocationDto locationDto, @PathVariable("userId") String userId, @PathVariable("alias") String alias) {
         MongoTemplate mongoTemplate = new MongoTemplate(new MongoClient("127.0.0.1"), "hazardmanager");
@@ -68,7 +68,7 @@ public class LocationController {
         this.service.save(location);
         return new ResponseEntity<>(toDto(location), HttpStatus.OK);
     }
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = {"/{userId}/locations/{alias}"}, method = RequestMethod.DELETE)
     public ResponseEntity deleteLocation(@PathVariable("userId") String userId, @PathVariable("alias") String alias){
         MongoTemplate mongoTemplate = new MongoTemplate(new MongoClient("127.0.0.1"), "hazardmanager");
@@ -84,7 +84,7 @@ public class LocationController {
         this.service.delete(location.getId());
         return new ResponseEntity(HttpStatus.OK);
     }
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = {"/{userId}/locations"}, method = RequestMethod.DELETE)
     public ResponseEntity deleteLocations(@PathVariable("userId") String userId){
         MongoTemplate mongoTemplate = new MongoTemplate(new MongoClient("127.0.0.1"), "hazardmanager");

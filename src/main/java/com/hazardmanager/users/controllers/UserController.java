@@ -56,8 +56,8 @@ public class UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"/users"}, method = RequestMethod.GET)
-    public ResponseEntity<Set<UserDto>> getAllUsersInArea(@RequestParam("latitude") double latitude, @RequestParam double longitude, @RequestParam double radius) {
+    @RequestMapping(value = {"/{latitude}/{longitude}/{radius}"}, method = RequestMethod.GET)
+    public ResponseEntity<Set<UserDto>> getAllUsersInArea(@PathVariable("latitude") double latitude, @PathVariable("longitude") double longitude, @PathVariable("radius") double radius) {
         AreaDto area = new AreaDto();
         area.longitude = longitude;
         area.latitude = latitude;

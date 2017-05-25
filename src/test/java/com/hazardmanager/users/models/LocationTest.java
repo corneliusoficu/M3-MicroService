@@ -38,7 +38,7 @@ public class LocationTest {
         String alias = "Test";
         location.setAlias(alias);
         Assert.assertEquals(alias, location.getAlias());
-    }
+}
 
     @Test(expected = IllegalArgumentException.class)
     public void when_setLatitude_is_called_should_throw_IllegalArgumentException() {

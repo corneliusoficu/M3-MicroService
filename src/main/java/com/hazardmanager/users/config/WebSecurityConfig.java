@@ -22,6 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        /*
         http
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
@@ -33,6 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .and()
                 .logout();
+                */
 
 
     }
@@ -40,8 +42,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
+        /*
+
         auth.userDetailsService(mongoSecurityService).passwordEncoder(passwordEncoder)
                 .and()
         .inMemoryAuthentication().withUser("user").password("password").roles("ADMIN");
+        */
     }
 }

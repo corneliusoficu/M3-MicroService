@@ -1,5 +1,6 @@
 package com.hazardmanager.users.controllers;
 
+import com.hazardmanager.users.DTO.AreaDto;
 import com.hazardmanager.users.DTO.CreatingLocationDto;
 import com.hazardmanager.users.DTO.CreatingUserDto;
 import com.hazardmanager.users.DTO.LocationDto;
@@ -42,6 +43,25 @@ public class LocationController {
             LocationDto dto = toDto(location);
             result.add(dto);
         }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = {"/locations"}, method = RequestMethod.GET)
+    public ResponseEntity<List<LocationDto>> getAllLocationsInArea(@RequestParam("latitude") double latitude,@RequestParam double longitude,@RequestParam double radius) {
+        AreaDto area = new AreaDto();
+        area.longitude = longitude;
+        area.latitude = latitude;
+        area.radius = radius;
+        List<Location> locationModels = this.service.getLocationsWithinEventArea(area);
+        if (locationModels.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        List<LocationDto> result = new ArrayList<>();
+        for (Location location : locationModels) {
+            LocationDto dto = toDto(location);
+            result.add(dto);
+        }
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

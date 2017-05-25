@@ -1,10 +1,12 @@
 package com.hazardmanager.users.services;
 
+import com.hazardmanager.users.DTO.AreaDto;
 import com.hazardmanager.users.models.Location;
-import com.hazardmanager.users.services.CrudService;
-/**
- * Created by Bogdan on 04-May-17.
- */
-public interface LocationService extends CrudService<Location>{
 
+import java.util.List;
+
+public interface LocationService extends CrudService<Location>{
+    List<Location> getAllUserLocations(String userId);
+    Location getLocationByUserIdAndAlias(String userId, String alias);
+    List<Location> getLocationsWithinEventArea(AreaDto area);
 }

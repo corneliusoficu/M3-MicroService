@@ -71,7 +71,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     public boolean isInArea(Location location, AreaDto area){
-        double distance = DistanceCalculator.distance(location.getLatitude(),location.getLongitude(),area.latitude,area.longitude,"N");
+        double distance = DistanceCalculator.distance(location.getLatitude(),location.getLongitude(),area.latitude,area.longitude);
         return distance < area.radius;
     }
 

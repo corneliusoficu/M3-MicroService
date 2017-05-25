@@ -46,8 +46,8 @@ public class LocationController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"/locations"}, method = RequestMethod.GET)
-    public ResponseEntity<List<LocationDto>> getAllLocationsInArea(@RequestParam("latitude") double latitude,@RequestParam double longitude,@RequestParam double radius) {
+    @RequestMapping(value = {"/locations/{latitude}/{longitude}/{radius}"}, method = RequestMethod.GET)
+    public ResponseEntity<List<LocationDto>> getAllLocationsInArea(@PathVariable("latitude") double latitude,@PathVariable("longitude") double longitude,@PathVariable("radius") double radius) {
         AreaDto area = new AreaDto();
         area.longitude = longitude;
         area.latitude = latitude;

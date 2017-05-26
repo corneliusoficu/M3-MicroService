@@ -6,25 +6,29 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Size;
 
-@Document(collection="Locations")
+@Document(collection = "Locations")
 public class Location {
 
+    private static final double LATITUDE_UPPER_BOUND = 85;
+    private static final double LATITUDE_LOWER_BOUND = -85.05115;
+    private static final double LONGITUDE_LOWER_BOUND = -180;
+    private static final double LONGITUDE_UPPER_BOUND = 180;
     @Id
     private String id;
 
     @NotBlank
-    @Size(max=50)
+    @Size(max = 50)
     private double latitude;
 
     @NotBlank
-    @Size(max=50)
+    @Size(max = 50)
     private double longitude;
 
     @NotBlank
-    @Size(max=50)
+    @Size(max = 50)
     private String alias;
 
-    @Size(max=50)
+    @Size(max = 50)
     private String userId;
 
     public Location(String userId) {
@@ -39,49 +43,51 @@ public class Location {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
-        validateLatitude(latitude);
-        this.latitude = latitude;
+    public void setLatitude(double latitude) throws IllegalArgumentException {
+        if (isLatitudeValid(latitude)) {
+            this.latitude = latitude;
+        } else {
+            throw new IllegalArgumentException("Latitude cannot be null.");
+        }
     }
 
     public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
-        validateLongitude(longitude);
-        this.longitude = longitude;
+    public void setLongitude(double longitude) throws IllegalArgumentException {
+        if (isLongitudeValid(longitude)) {
+            this.longitude = longitude;
+        } else {
+            throw new IllegalArgumentException("Longitude cannot be null.");
+        }
     }
 
     public String getAlias() {
         return alias;
     }
 
-    public void setAlias(String alias) {
-        validateAlias(alias);
-        this.alias = alias;
+    public void setAlias(String alias) throws IllegalArgumentException {
+        if (isAliasValid(alias)) {
+            this.alias = alias;
+        } else {
+            throw new IllegalArgumentException("Alias cannot be null.");
+        }
     }
 
     public String getUserId() {
         return userId;
     }
 
-
-    public void validateLatitude(double latitude) throws  IllegalArgumentException {
-        if (latitude < -85 || latitude > 85) {
-            throw new IllegalArgumentException("Latitude value is invalid! Value has to be between -85 and 85. Passed value: " + latitude);
-        }
+    public boolean isLatitudeValid(double latitude) {
+        return !(latitude < LATITUDE_LOWER_BOUND || latitude > LATITUDE_UPPER_BOUND);
     }
 
-    public void validateLongitude(double longitude) throws  IllegalArgumentException  {
-        if (longitude < -180 || longitude > 180) {
-            throw new IllegalArgumentException("Longitude value is invalid! Value has to be between -180 and 180. Passed value: " + longitude);
-        }
+    public boolean isLongitudeValid(double longitude) {
+        return !(longitude < LONGITUDE_LOWER_BOUND || longitude > LONGITUDE_UPPER_BOUND);
     }
 
-    public void validateAlias(String alias) throws  IllegalArgumentException {
-        if (alias.equals(null) || alias.equals("")) {
-            throw new IllegalArgumentException("Alias value is invalid! Value is null!");
-        }
+    public boolean isAliasValid(String alias) {
+        return !(alias == null || alias.isEmpty());
     }
 }

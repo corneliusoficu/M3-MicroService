@@ -2,12 +2,10 @@ package com.hazardmanager.users.controllers;
 
 import com.hazardmanager.users.DTO.AreaDto;
 import com.hazardmanager.users.DTO.CreatingUserDto;
-import com.hazardmanager.users.DTO.LocationDto;
 import com.hazardmanager.users.DTO.UserDto;
 import com.hazardmanager.users.models.Location;
 import com.hazardmanager.users.models.User;
 import com.hazardmanager.users.services.LocationService;
-import com.hazardmanager.users.utilis.RandomImportsGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +17,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.hazardmanager.users.helpers.UserConverter.toCreatingModel;
+import static com.hazardmanager.users.helpers.UserConverter.toDto;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -79,9 +80,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserDto> addUser(@RequestBody CreatingUserDto userDto) {
         User user = toCreatingModel(userDto);
-        try {
-            checkIfValidUser(user);
-        }catch (IllegalArgumentException e){
+        if (!isUserValid(user)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         User savedUser = this.service.save(user);
@@ -95,7 +94,6 @@ public class UserController {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
         return new ResponseEntity<>(toDto(user), HttpStatus.OK);
     }
 
@@ -107,9 +105,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         modifyUserAccordingToDTO(user, userDto);
-        try {
-            checkIfValidUser(user);
-        }catch (IllegalArgumentException e){
+        if (isUserValid(user)){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         this.service.save(user);
@@ -148,40 +144,11 @@ public class UserController {
         }
     }
 
-    private UserDto toDto(User user) {
-        UserDto dto = new UserDto();
-        dto.id = user.getId();
-        dto.firstName = user.getFirstName();
-        dto.lastName = user.getLastName();
-        dto.userName = user.getUserName();
-        dto.password = user.getPassword();
-        dto.email = user.getEmail();
-        dto.phoneNumber = user.getPhoneNumber();
-        dto.role = user.getRole();
-        return dto;
-    }
-
-    private User toCreatingModel(CreatingUserDto dto) {
-        User user = new User();
-        user.setFirstName(dto.firstName);
-        user.setLastName(dto.lastName);
-        user.setUserName(dto.userName);
-
-        user.setPassword(passwordEncoder.encode(dto.password));
-        user.setPhoneNumber(dto.phoneNumber);
-        user.setEmail(dto.email);
-        user.setRole("ROLE_USER");
-        return user;
-    }
-
-    private void checkIfValidUser(User user)
-    {
-
-            user.validateFirstName(user.getFirstName());
-            user.validateLastName(user.getLastName());
-            user.validateUserName(user.getUserName());
-            user.validateEmail(user.getEmail());
-            user.validatePhoneNumber(user.getPhoneNumber());
-
+    private boolean isUserValid(User user) {
+        return user.isFirstNameValid(user.getFirstName()) &&
+            user.isLastNameValid(user.getLastName()) &&
+            user.isUserNameValid(user.getUserName()) &&
+            user.isEmailValid(user.getEmail()) &&
+            user.isPhoneNumberValid(user.getPhoneNumber());
     }
 }

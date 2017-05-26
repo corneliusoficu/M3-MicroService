@@ -8,37 +8,42 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.Size;
 import java.util.regex.Pattern;
 
-@Document(collection="Users")
+@Document(collection = "Users")
 public class User {
+    private static final int MAX_FIELD_LENGTH = 50;
+    private static final int MIN_FIELD_LENGTH = 2;
+    private static final int MAX_PHONE_LENGTH = 15;
+    private static final int MAX_PASSWORD_LENGTH = 60;
+    private static final int MAX_ROLE_LENGTH = 30;
     @Id
     private String id;
 
     @NotBlank
-    @Size(max=50)
+    @Size(max = MAX_FIELD_LENGTH, min = MIN_FIELD_LENGTH)
     private String firstName;
 
     @NotBlank
-    @Size(max=50)
+    @Size(max = MAX_FIELD_LENGTH, min = MIN_FIELD_LENGTH)
     private String lastName;
 
     @NotBlank
-    @Size(max=50)
+    @Size(max = MAX_FIELD_LENGTH, min = MIN_FIELD_LENGTH)
     private String userName;
 
     @NotBlank
-    @Size(max=60)
+    @Size(max = MAX_PASSWORD_LENGTH, min = MIN_FIELD_LENGTH)
     private String password;
 
     @NotBlank
-    @Size(max=30)
+    @Size(max = MAX_ROLE_LENGTH, min = MIN_FIELD_LENGTH)
     private String role;
 
     @NotBlank
-    @Size(max = 50)
+    @Size(max = MAX_FIELD_LENGTH, min = MIN_FIELD_LENGTH)
     private String email;
 
     @NotBlank
-    @Size(max = 15)
+    @Size(max = MAX_PHONE_LENGTH, min = MIN_FIELD_LENGTH)
     private String phoneNumber;
 
     public String getId() {
@@ -105,38 +110,27 @@ public class User {
         this.role = role;
     }
 
-    public void validateFirstName(String text)throws IllegalArgumentException {
-        if(text.length()>50)
-            throw new IllegalArgumentException("First Name must be under 50 characters long. Passed name has " + text.length()+ " characters");
+    public boolean isFirstNameValid(String firstName) {
+        return firstName.length() < MAX_FIELD_LENGTH && firstName.length() > MIN_FIELD_LENGTH;
     }
 
-    public void validateLastName(String text)throws IllegalArgumentException{
-        if(text.length()>50)
-            throw new IllegalArgumentException("Last Name must be under 50 characters long. Passed name has " + text.length()+ " characters");
+    public boolean isLastNameValid(String lastName) {
+        return lastName.length() < MAX_FIELD_LENGTH && lastName.length() > MIN_FIELD_LENGTH;
     }
 
-    public void validateUserName(String text)throws IllegalArgumentException {
-        if(text.length()>50)
-            throw new IllegalArgumentException("Username must be under 50 characters long. Passed name has " + text.length()+ " characters");
+    public boolean isUserNameValid(String userName) {
+        return userName.length() < MAX_FIELD_LENGTH && userName.length() > MIN_FIELD_LENGTH;
     }
 
-    public void validatePassword(String text)throws IllegalArgumentException {
-        if(text.length()>50)
-            throw new IllegalArgumentException("Password must be under 50 characters long. Passed name has " + text.length()+ " characters");
+    public boolean isPasswordValid(String password) {
+        return password.length() < MAX_PASSWORD_LENGTH && password.length() > MIN_FIELD_LENGTH;
     }
 
-    public void validateEmail(String text)throws IllegalArgumentException {
-        if(text.length()>50)
-            throw new IllegalArgumentException("Email must be under 50 characters long. Passed name has " + text.length()+ " characters");
-        if(!text.contains("@"))
-            throw new IllegalArgumentException("Email must be a valid email.");
+    public boolean isEmailValid(String email) {
+        return email.length() < MAX_FIELD_LENGTH && email.length() > MIN_FIELD_LENGTH && email.contains("@");
     }
 
-    public void validatePhoneNumber(String text)throws IllegalArgumentException {
-        if(text.length()>50)
-            throw new IllegalArgumentException("Phone Number must be under 50 characters long. Passed name has " + text.length()+ " characters");
-        if (Pattern.matches("[a-zA-Z]+", text)) {
-            throw new IllegalArgumentException("Phone Number must be a valid phone number. It must contain only digits.");
-        }
+    public boolean isPhoneNumberValid(String phoneNumber) {
+        return phoneNumber.length() < MAX_PHONE_LENGTH && phoneNumber.length() > MIN_FIELD_LENGTH && Pattern.matches("[0-9]+", phoneNumber);
     }
 }

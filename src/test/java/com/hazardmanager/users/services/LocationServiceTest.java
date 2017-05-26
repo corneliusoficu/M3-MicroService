@@ -13,8 +13,8 @@ import java.util.List;
 public class LocationServiceTest {
 
     private Location location;
-    LocationService service;
-    AreaDto area;
+    private LocationService service;
+    private AreaDto area;
 
     @Before
     public void buildUp() {
@@ -51,12 +51,8 @@ public class LocationServiceTest {
 //        Assert.assertTrue(isInArea == true);
 //    }
     @Test(expected = NullPointerException.class)
-    public void when_getLocationsWithinEventName_called_should_throw_NullPointerException() {
+    public void when_getLocationsWithinEventName_called_with_null_should_throw_NullPointerException() {
         List<Location> locations = service.getLocationsWithinEventArea(null);
     }
 
-//    @Before
-    // public void buildUp() {
-    //      AreaDto area = new AreaDto();
-    //area.latitude = 46
 }

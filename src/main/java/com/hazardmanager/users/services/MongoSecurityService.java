@@ -16,23 +16,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by corne on 13-May-17.
- */
 @Service
-public class MongoSecurityService implements UserDetailsService
-{
+public class MongoSecurityService implements UserDetailsService {
     @Autowired
     MongoTemplate mongoTemplate;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         Query query = new Query();
         query.addCriteria(Criteria.where("userName").is(username));
-        User user = mongoTemplate.findOne(query,User.class);
+        User user = mongoTemplate.findOne(query, User.class);
 
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException(username);
         }
         return new org.springframework.security.core.userdetails.User(
@@ -44,11 +39,9 @@ public class MongoSecurityService implements UserDetailsService
                 true,
                 getAuthorities(user)
         );
-
     }
 
     private List<GrantedAuthority> getAuthorities(User user) {
-
         String role = user.getRole();
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(role));

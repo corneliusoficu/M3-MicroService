@@ -6,10 +6,18 @@ import com.hazardmanager.users.models.User;
 import com.hazardmanager.users.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Component
 public class UserConverter {
-    @Autowired
-    private static PasswordEncoder passwordEncoder;
+
+   private static PasswordEncoder passwordEncoder;
+
+   @Autowired
+   public void setPasswordEncoder(PasswordEncoder newPasswordEncoder){
+       passwordEncoder = newPasswordEncoder;
+   }
 
     public static UserDto toDto(User user) {
         UserDto dto = new UserDto();

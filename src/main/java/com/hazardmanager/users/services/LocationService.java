@@ -9,4 +9,5 @@ public interface LocationService extends CrudService<Location>{
     List<Location> getAllUserLocations(String userId);
     Location getLocationByUserIdAndAlias(String userId, String alias);
     List<Location> getLocationsWithinEventArea(AreaDto area);
+    boolean isInArea(Location location, AreaDto area);
 }

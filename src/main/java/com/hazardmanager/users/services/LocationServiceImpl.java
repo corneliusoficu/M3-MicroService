@@ -70,8 +70,12 @@ public class LocationServiceImpl implements LocationService {
         return locations.stream().filter(location -> isInArea(location,area)).collect(Collectors.toList());
     }
 
+    @Override
     public boolean isInArea(Location location, AreaDto area){
-        double distance = DistanceCalculator.distance(location.getLatitude(),location.getLongitude(),area.latitude,area.longitude,"N");
+        if(area == null){
+            return false;
+        }
+        double distance = DistanceCalculator.calculateDistance(location.getLatitude(),location.getLongitude(),area.latitude,area.longitude);
         return distance < area.radius;
     }
 

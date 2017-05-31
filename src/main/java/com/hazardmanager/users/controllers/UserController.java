@@ -2,6 +2,7 @@ package com.hazardmanager.users.controllers;
 
 import com.hazardmanager.users.DTO.AreaDto;
 import com.hazardmanager.users.DTO.CreatingUserDto;
+import com.hazardmanager.users.DTO.LoginDto;
 import com.hazardmanager.users.DTO.UserDto;
 import com.hazardmanager.users.helpers.UserConverter;
 import com.hazardmanager.users.models.Location;
@@ -11,7 +12,6 @@ import com.hazardmanager.users.services.RandomEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.hazardmanager.users.services.UserService;
 
@@ -54,6 +54,16 @@ public class UserController {
             result.add(dto);
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
+        String userId = service.getUserId(loginDto.username,loginDto.password);
+        if(userId == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<String>(userId,HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = {"/{latitude}/{longitude}/{radius}"}, method = RequestMethod.GET)

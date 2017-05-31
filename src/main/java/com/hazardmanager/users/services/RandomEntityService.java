@@ -3,17 +3,11 @@ package com.hazardmanager.users.services;
 import com.github.javafaker.Faker;
 import com.hazardmanager.users.models.Location;
 import com.hazardmanager.users.models.User;
-import com.hazardmanager.users.services.LocationService;
-import com.hazardmanager.users.services.LocationServiceImpl;
-import com.hazardmanager.users.services.UserService;
-import com.hazardmanager.users.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 

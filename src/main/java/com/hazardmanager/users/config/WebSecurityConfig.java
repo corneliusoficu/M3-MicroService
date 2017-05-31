@@ -22,32 +22,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /*
-        http
-                .authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/logout").permitAll()
-                .antMatchers(HttpMethod.GET,"/v1/users").hasAuthority("ROLE_ADMIN")
-                .anyRequest().authenticated()
-                .and()
-                .csrf().disable()
-                .formLogin()
-                .and()
-                .logout();
-                */
+
+//        http
+//                .authorizeRequests()
+//                .antMatchers("/login").permitAll()
+//                .antMatchers("/logout").permitAll()
+//                .antMatchers(HttpMethod.GET,"/v1/users").hasAuthority("ROLE_ADMIN")
+//                .anyRequest().authenticated()
+//                .and()
+//                .csrf().disable()
+//                .formLogin()
+//                .and()
+//                .logout();
         http.csrf().disable();
+
 
 
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
-        /*
-
-        auth.userDetailsService(mongoSecurityService).passwordEncoder(passwordEncoder)
-                .and()
-        .inMemoryAuthentication().withUser("user").password("password").roles("ADMIN");
-        */
+//
+//        auth.userDetailsService(mongoSecurityService).passwordEncoder(passwordEncoder)
+//                .and()
+//        .inMemoryAuthentication().withUser("user").password("password").roles("ADMIN");
     }
 }

@@ -43,4 +43,5 @@ public class UserConverter {
         user.setRole("ROLE_USER");
         return user;
     }
+
 }

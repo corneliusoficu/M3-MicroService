@@ -4,6 +4,8 @@ import com.hazardmanager.users.DTO.AreaDto;
 import com.hazardmanager.users.DTO.CreatingUserDto;
 import com.hazardmanager.users.DTO.LoginDto;
 import com.hazardmanager.users.DTO.UserDto;
+import com.hazardmanager.users.custom_exceptions.PasswordMismatchException;
+import com.hazardmanager.users.custom_exceptions.UsernameNotRegisteredException;
 import com.hazardmanager.users.helpers.UserConverter;
 import com.hazardmanager.users.models.Location;
 import com.hazardmanager.users.models.User;
@@ -58,12 +60,15 @@ public class UserController {
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
-        String userId = service.getUserId(loginDto.username,loginDto.password);
-        if(userId == null){
+        String userId = null;
+        try {
+            userId = service.getUserId(loginDto.username,loginDto.password);
+        } catch (UsernameNotRegisteredException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
-            return new ResponseEntity<String>(userId,HttpStatus.OK);
+        } catch (PasswordMismatchException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
+        return new ResponseEntity<String>(userId, HttpStatus.OK);
     }
 
     @RequestMapping(value = {"/{latitude}/{longitude}/{radius}"}, method = RequestMethod.GET)

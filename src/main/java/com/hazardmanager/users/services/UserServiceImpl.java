@@ -1,5 +1,7 @@
 package com.hazardmanager.users.services;
 
+import com.hazardmanager.users.custom_exceptions.PasswordMismatchException;
+import com.hazardmanager.users.custom_exceptions.UsernameNotRegisteredException;
 import com.hazardmanager.users.models.User;
 import com.hazardmanager.users.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +46,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String getUserId(String username, String password) {
+    public String getUserId(String username, String password) throws UsernameNotRegisteredException, PasswordMismatchException {
         Query query = new Query();
         query.addCriteria(Criteria.where("userName").is(username));
         User user = mongoTemplate.findOne(query, User.class);
-        if(user == null || !passwordEncoder.matches(password,user.getPassword())){
-            return null;
+        if(user == null){
+            throw new UsernameNotRegisteredException("There is no user registered with the provided username.");
+        } else if (!passwordEncoder.matches(password,user.getPassword())){
+            throw new PasswordMismatchException("The provided password did not match with the username's password.");
         }else{
             return user.getId();
         }

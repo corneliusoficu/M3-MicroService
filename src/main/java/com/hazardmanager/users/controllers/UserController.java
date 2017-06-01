@@ -81,7 +81,10 @@ public class UserController {
         List<Location> locations = this.locationService.getLocationsWithinEventArea(area);
         Set<User> usersInArea = new HashSet<>();
         for (Location location : locations){
-            usersInArea.add(this.service.getById(location.getUserId()));
+            User user = this.service.getById(location.getUserId());
+            if (user != null) {
+                usersInArea.add(this.service.getById(location.getUserId()));
+            }
         }
         if(usersInArea.size() == 0){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

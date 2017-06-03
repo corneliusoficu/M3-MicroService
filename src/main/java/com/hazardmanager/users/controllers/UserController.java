@@ -40,7 +40,7 @@ public class UserController {
     private RandomEntityService randomEntityService;    //For production only
 
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:1234")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserDto>> getAllUsers() {
 
@@ -58,6 +58,7 @@ public class UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:1234")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
         String userId = null;
@@ -80,7 +81,10 @@ public class UserController {
         List<Location> locations = this.locationService.getLocationsWithinEventArea(area);
         Set<User> usersInArea = new HashSet<>();
         for (Location location : locations){
-            usersInArea.add(this.service.getById(location.getUserId()));
+            User user = this.service.getById(location.getUserId());
+            if (user != null) {
+                usersInArea.add(this.service.getById(location.getUserId()));
+            }
         }
         if(usersInArea.size() == 0){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -113,7 +117,7 @@ public class UserController {
 
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:1234")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserDto> addUser(@RequestBody CreatingUserDto userDto) {
         User user = toCreatingModel(userDto);
@@ -124,7 +128,7 @@ public class UserController {
         return new ResponseEntity<>(toDto(savedUser), HttpStatus.CREATED);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:1234")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") String id) {
         User user = this.service.getById(id);
@@ -134,7 +138,7 @@ public class UserController {
         return new ResponseEntity<>(toDto(user), HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:1234")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<UserDto> modifyUser(@RequestBody CreatingUserDto userDto, @PathVariable("id") String id) {
         User user = this.service.getById(id);
@@ -149,7 +153,7 @@ public class UserController {
         return new ResponseEntity<>(toDto(user), HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:1234")
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
     public ResponseEntity deleteUser(@PathVariable("id") String id){
         User user = this.service.getById(id);

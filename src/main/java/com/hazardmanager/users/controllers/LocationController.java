@@ -22,7 +22,7 @@ public class LocationController {
     @Autowired
     private LocationService service;
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:1234")
     @RequestMapping(value = {"/{userId}/locations"}, method = RequestMethod.GET)
     public ResponseEntity<List<LocationDto>> getAllLocationsById(@PathVariable("userId") String userId) {
 
@@ -60,7 +60,7 @@ public class LocationController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:1234")
     @RequestMapping(value = {"/{userId}/locations"}, method = RequestMethod.POST)
     public ResponseEntity<LocationDto> addNewLocation(@RequestBody CreatingLocationDto creatinglocationDto, @PathVariable("userId") String userId) {
         Location possibleLocation = this.service.getLocationByUserIdAndAlias(userId, creatinglocationDto.alias);
@@ -79,7 +79,7 @@ public class LocationController {
         return new ResponseEntity<>(toDto(savedLocation), HttpStatus.CREATED);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:1234")
     @RequestMapping(value = {"/{userId}/locations/{alias}"}, method = RequestMethod.PUT)
     public ResponseEntity<LocationDto> modifyLocation(@RequestBody CreatingLocationDto locationDto, @PathVariable("userId") String userId, @PathVariable("alias") String alias) {
 
@@ -105,7 +105,7 @@ public class LocationController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:1234")
     @RequestMapping(value = {"/{userId}/locations/{alias}"}, method = RequestMethod.DELETE)
     public ResponseEntity deleteLocation(@PathVariable("userId") String userId, @PathVariable("alias") String alias) {
         Location location = this.service.getLocationByUserIdAndAlias(userId, alias);
@@ -116,7 +116,7 @@ public class LocationController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:1234")
     @RequestMapping(value = {"/{userId}/locations"}, method = RequestMethod.DELETE)
     public ResponseEntity deleteLocations(@PathVariable("userId") String userId) {
 
